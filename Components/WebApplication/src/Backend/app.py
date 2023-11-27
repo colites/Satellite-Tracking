@@ -20,7 +20,7 @@ def SendCoordinatesToCollector():
         return jsonify({"message": "Missing a Required Piece of Information"}), 400
 
     coordinates = (latitude, longitude)
-    response = requests.post('http://127.0.0.1:5003/get-satellites', json=coordinates)
+    response = requests.post('http://0.0.0.0:5003/get-satellites', json=coordinates)
     if response.status_code != 200:
         return jsonify({"message": "Could not send to Data Collector"}), response.status_code
     
@@ -28,4 +28,4 @@ def SendCoordinatesToCollector():
 
 if __name__ == '__main__':
     app = create_app()
-    app.run(debug=False)
+    app.run(debug=False,host='0.0.0.0')
