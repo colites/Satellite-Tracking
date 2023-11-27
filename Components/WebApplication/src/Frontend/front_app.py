@@ -15,4 +15,4 @@ def frontPage():
 
 if __name__ == '__main__':
     front_app = create_app()
-    front_app.run(debug=False)
+    front_app.run(debug=False,host='0.0.0.0')
