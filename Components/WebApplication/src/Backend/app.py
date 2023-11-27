@@ -1,9 +1,6 @@
 import requests
 from flask import Flask, request, jsonify, Blueprint
 from flask_cors import CORS
-from datetime import date
-
-import schemas_queries as queries
 
 main = Blueprint('main', __name__)
 

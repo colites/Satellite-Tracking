@@ -34,11 +34,11 @@ inspector = inspect(engine)
 if not inspector.has_table('satellites'):
     Base.metadata.create_all(engine)
 
-def commitSatellites(satellites):
+def commitSatellites(data):
     Session = sessionmaker(bind=engine)
     session = Session()
 
-    for satellite in satellites:
+    for sat_data in data["above"]:
         session.add(satellite)
 
     session.commit()
