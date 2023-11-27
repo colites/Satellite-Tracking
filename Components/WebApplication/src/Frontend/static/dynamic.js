@@ -4,33 +4,26 @@
 
 async function SendCoordinates(latitude, longitude){
 
-  const data = {
-      latitude: latitude,
-      longitude: longitude
+    const data = {
+        latitude: latitude,
+        longitude: longitude
   };
 
-  const response = await fetch(`http://127.0.0.1:5001/send-coordinates`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(data)
-  });
+    const response = await fetch(`http://127.0.0.1:5001/send-coordinates`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(data)
+    });
 
-  const newform = document.querySelector("#input_container");
-  if (!response.ok) {
-      newform.innerHTML = `
-          <h1> Coordinates failed to send </h1>
+    const newform = document.querySelector("#input_container");
+    newform.innerHTML = `
+          <h1>  Coordinates failed to send because I dont want to use up my precious API transactions till the final project so this will just echo</h1>
+          <p>Latitude: ${latitude}</p>
+          <p>Longitude: ${longitude}</p>
           <button type="button" onclick="back()">Back</button>
-      `
-      throw new Error(`Server error: ${response.status} ${response.statusText}`);
-  }
-  else {
-      newform.innerHTML = `
-          <h1> Coordinates sent, preparing to find satellites </h1>
-          <button type="button" onclick="back()">Back</button>
-      `
-  }
+    `
 }
 
 function submitCoordinates(){
@@ -49,7 +42,7 @@ function getUserLocation() {
     }
   }
 
-  function success(position) {
+function success(position) {
     // geolocation API Documentation helped here
     const latitude = position.coords.latitude;
     const longitude = position.coords.longitude;
