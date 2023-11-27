@@ -9,7 +9,7 @@ async function SendCoordinates(latitude, longitude){
         longitude: longitude
   };
 
-    const response = await fetch(`https://0.0.0.0:5001/send-coordinates`, {
+    const response = await fetch(`https://backend-q6r6.onrender.com/send-coordinates`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
