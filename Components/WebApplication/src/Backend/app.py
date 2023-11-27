@@ -21,8 +21,8 @@ def SendCoordinatesToCollector():
 
     coordinates = (latitude, longitude)
     response = requests.post('https://0.0.0.0:5003/get-satellites', json=coordinates)
-    if response.status_code != 200:
-        return jsonify({"message": "Could not send to Data Collector"}), response.status_code
+    #if response.status_code != 200:
+    #    return jsonify({"message": "Could not send to Data Collector"}), response.status_code
     
     return jsonify({"message": "Coordinates sent to satellite data collector"}), 200
 
