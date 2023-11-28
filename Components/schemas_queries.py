@@ -1,6 +1,7 @@
 from sqlalchemy import Column, Integer, Float, String, Date, create_engine, inspect
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
+from datetime import date
 
 import config
 
@@ -30,16 +31,32 @@ class Satellite(Base):
     longitude = Column(Float)
     altitude = Column(Float)
 
+
 inspector = inspect(engine)
 if not inspector.has_table('satellites'):
     Base.metadata.create_all(engine)
+
 
 def commitSatellites(data):
     Session = sessionmaker(bind=engine)
     session = Session()
 
-    for sat_data in data["above"]:
-        session.add(satellite)
+    try:
+        for sat_data in data["above"]:
+            satellite = Satellite(date=date.today(),
+                                satid=sat_data['satid'],
+                                inter_designator=sat_data['intDesignator'],
+                                satname=sat_data['satname'],
+                                launch_date=sat_data['launchDate'],
+                                latitude=sat_data['satlat'],
+                                longitude=sat_data['satlng'],
+                                altitude=sat_data['satalt'])
+            session.add(satellite)
+    except Exception as e:
+        print("error", e)
+        session.close()
+        return f"fail"
 
     session.commit()
     session.close()
+    return f"success"
