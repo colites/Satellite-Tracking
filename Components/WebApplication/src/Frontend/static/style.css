@@ -33,3 +33,54 @@ button {
     justify-content: center;
     gap: 15px;
 }
+
+/* modal stuff  */
+/* learned about modals from previous hobby project */
+#modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.7);
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 10% auto;
+    border: 1px solid #888;
+    width: 40%;
+}
+
+
+.close-button {
+    color: rgb(206, 194, 194);
+    float: right;
+    font-size: 55px;
+    font-weight: bold;
+    padding: 15px;
+    border-radius: 45%;
+}
+
+.close-button:hover, .close-button:focus {
+    color: red;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+
+/* Satellites list stuff */
+
+#satellites-list {
+    max-height: 300px; 
+    overflow-y: auto;
+    border: 1px solid #ccc; 
+    padding: 10px;
+}
+
+.satellite-item {
+    margin-bottom: 10px;
+}

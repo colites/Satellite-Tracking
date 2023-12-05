@@ -1,4 +1,4 @@
 DB_HOST = 'localhost'
 DB_USER = 'postgres'
-DB_PASS = 'ksdfafsf'
+DB_PASS = 'kays1234'
 DB_NAME = 'satellites_proj'

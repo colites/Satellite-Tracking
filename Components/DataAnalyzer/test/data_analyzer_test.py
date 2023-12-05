@@ -1,7 +1,7 @@
 import unittest
 from unittest.mock import patch  
 from datetime import date
-from WebApplication.src.Backend.app import create_app
+from DataAnalyzer.src.data_analyzer import create_app
 
 class TestBackend(unittest.TestCase):
     def setUp(self):
