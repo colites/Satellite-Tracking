@@ -18,8 +18,8 @@ def getData():
     data = request.get_json()
     
     api_key = '777RKY-662TWA-KAK8Z7-55Y1'
-    latitude = data[0]
-    longitude = data[1]
+    latitude = data['latitude']
+    longitude = data['longitude']
     altitude = 0
     search_radius = 30
     category = 0

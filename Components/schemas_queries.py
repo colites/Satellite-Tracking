@@ -113,7 +113,7 @@ def getAllSatellites():
     session.close()
     return satellites_dicts
 
-def getSatellitesFiltered(satname,satlatitude,satlongitude,sataltitude):
+def getSatellitesFiltered(satname="", satlatitude="", satlongitude="", sataltitude=""):
     Session = sessionmaker(bind=engine)
     session = Session()
 
@@ -122,11 +122,19 @@ def getSatellitesFiltered(satname,satlatitude,satlongitude,sataltitude):
                                                         Satellite.satlatitude,
                                                         Satellite.satlongitude,
                                                         Satellite.sataltitude,
-                                                        ).filter_by(satname=satname, 
-                                                                    satlatitude=satlatitude, 
-                                                                    satlongitude=satlongitude,
-                                                                    sataltitude=sataltitude).all()
+                                                        )
 
+    if satname:
+        satellites = satellites.filter(Satellite.satname == satname)
+    if satlatitude:
+        satellites = satellites.filter(Satellite.satlatitude == satlatitude)
+    if satlongitude:
+        satellites = satellites.filter(Satellite.satlongitude == satlongitude)
+    if sataltitude:
+        satellites = satellites.filter(Satellite.sataltitude == sataltitude)
+    
+    satellites = satellites.all()
+    
     satellites_dicts = [dict(zip(['satid', 'satname', 'satlatitude', 'satlongitude', 'sataltitude'], sat)) for sat in satellites]
 
     session.close()

@@ -33,12 +33,12 @@ def makeMap():
     return jsonify({"message": "data could not be analyzed"}), 500
 
 
-@main.route('/orbit-calculations', methods=['POST'])
+@main.route('/orbit-calculations', methods=['GET'])
 def orbitCalculations():
     satellite_data = queries.getAllSatellites()
     orbits_data = {"LEO": [], "MEO": [], "HEO": [], "GEO": []}
     for satellite in satellite_data:
-        satellite_altitude = satellite["sataltitude"]
+        satellite_altitude = int(satellite["sataltitude"])
         if satellite_altitude <= 2000:
             orbits_data["LEO"].append(satellite)
         elif satellite_altitude < 35785:

@@ -22,14 +22,14 @@ def SendCoordinatesToCollector():
     if latitude == "" or longitude == "":
         return jsonify({"message": "Missing a Required Piece of Information"}), 400
 
-    coordinates = (latitude, longitude)
+    coordinates = {'latitude':latitude, 'longitude':longitude}
     response = requests.post('http://127.0.0.1:5003/get-satellites', json=coordinates)
     if response.status_code != 201:
-        return jsonify({"message": "Could not send to Data Collector Successfully"}), response.status_code
+        return jsonify({"message": "Could not send to Data Collector Successfully"}), 502
     
     ## send requested data to frontend if data was successfully put inside the database
     try:
-        query_results = requests.get(f'http://127.0.0.1:5001/frontend-display?latitude={latitude}&longitude={longitude}')
+        query_results = requests.get(f'http://127.0.0.1:5001/Observable-satellites?latitude={latitude}&longitude={longitude}')
         return jsonify(query_results.json()), 200
 
     except Exception as e:
@@ -37,12 +37,14 @@ def SendCoordinatesToCollector():
         return jsonify({"message": "Coordinates could not be sent"}), 500
 
 
-@main.route('/frontend-display', methods=['GET'])
-def displayFrontend():
-    latitude = request.args.get("latitude")
-    longitude = request.args.get("longitude")
+@main.route('/Observable-satellites', methods=['GET'])
+def displayObservableSatellites():
+    #query parameters in web requests are treated as strings, unless converted
+    latitude = float(request.args.get("latitude"))
+    longitude = float(request.args.get("longitude"))
     satellites = queries.getSatellites(latitude=latitude, longitude=longitude)
-    return jsonify(satellites)
+
+    return jsonify(satellites), 200
 
 
 @main.route('/send-to-analyzer', methods=['POST'])
@@ -54,7 +56,7 @@ def sendData():
     data_type = data["type"]
     
     if data_type == "orbits":
-        calculations = requests.post('http://127.0.0.1:5002/orbit-calculations', json=data)
+        calculations = requests.get('http://127.0.0.1:5002/orbit-calculations')
     if data_type == "map":
         calculations = requests.post('http://127.0.0.1:5002/make-map', json=data)
         
