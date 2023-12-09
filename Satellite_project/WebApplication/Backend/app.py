@@ -3,7 +3,7 @@ import os
 import requests
 from flask import Flask, request, jsonify, Blueprint
 from flask_cors import CORS
-from prometheus_client import CollectorRegistry, Gauge, push_to_gateway, Counter
+from prometheus_client import CollectorRegistry, push_to_gateway, Counter
 
 #need to include root imports
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..')))
@@ -39,13 +39,13 @@ def SendCoordinatesToCollector():
         return jsonify({"message": "Missing a Required Piece of Information"}), 400
     
     coordinates = {'latitude':latitude, 'longitude':longitude}
-    response = requests.post('http://127.0.0.1:5003/get-satellites', json=coordinates)
+    response = requests.post('https://data-collector-r7r1.onrender.com/get-satellites', json=coordinates)
     if response.status_code != 201:
         return jsonify({"message": "Could not send to Data Collector Successfully"}), 502
     
     ## send requested data to frontend if data was successfully put inside the database
     try:
-        query_results = requests.get(f'http://127.0.0.1:5001/Observable-satellites?latitude={latitude}&longitude={longitude}')
+        query_results = requests.get(f'https://backend-q6r6.onrender.com/Observable-satellites?latitude={latitude}&longitude={longitude}')
         push_metrics()
         return jsonify(query_results.json()), 200
 
@@ -74,9 +74,9 @@ def sendData():
     data_type = data["type"]
     
     if data_type == "orbits":
-        calculations = requests.get('http://127.0.0.1:5002/orbit-calculations')
+        calculations = requests.get('https://data-analyzer.onrender.com/orbit-calculations')
     if data_type == "map":
-        calculations = requests.post('http://127.0.0.1:5002/make-map', json=data)
+        calculations = requests.post('https://data-analyzer.onrender.com/make-map', json=data)
         
     if calculations.status_code != 200:
         return jsonify({"message": "Could not analyze the data"}), 502

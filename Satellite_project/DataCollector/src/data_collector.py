@@ -6,7 +6,6 @@ import pika
 
 main = Blueprint('main', __name__)
 
-#license key = 777RKY-662TWA-KAK8Z7-55Y1
 def create_app():
     app = Flask(__name__)
     app.register_blueprint(main)

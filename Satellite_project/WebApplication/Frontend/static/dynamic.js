@@ -9,7 +9,7 @@ async function SendCoordinates(latitude, longitude){
         longitude: longitude
     };
 
-    const response = await fetch(`http://127.0.0.1:5001/send-coordinates`, {
+    const response = await fetch(`https://backend-q6r6.onrender.com/send-coordinates`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
@@ -78,7 +78,7 @@ async function calculateOrbits(){
         type: "orbits"
     }
 
-    const response = await fetch(`http://127.0.0.1:5001/send-to-analyzer`, {
+    const response = await fetch(`https://backend-q6r6.onrender.com/send-to-analyzer`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
@@ -203,7 +203,7 @@ async function sendSatelliteReqs(){
         }
     }
 
-    const response_data = await fetch(`http://127.0.0.1:5001/send-to-analyzer`, {
+    const response_data = await fetch(`https://backend-q6r6.onrender.com/send-to-analyzer`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
