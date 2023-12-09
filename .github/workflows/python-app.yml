@@ -38,7 +38,7 @@ jobs:
       postgres:
         image: postgres:15
         env:
-          POSTGRES_DB: Satellites_proj
+          POSTGRES_DB: satellites_proj
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: kays1234
         ports:
