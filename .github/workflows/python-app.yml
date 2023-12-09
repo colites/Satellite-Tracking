@@ -14,6 +14,20 @@ jobs:
   build:
 
     runs-on: windows-latest
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_DB: Satellites_proj
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: kays1234
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 3
     defaults:
       run:
         working-directory: Satellite_project
@@ -32,3 +46,12 @@ jobs:
          python -m unittest WebApplication.Backend.test.web_application_test
          python -m unittest DataCollector.test.data_collector_test 
          python -m unittest DataAnalyzer.test.data_analyzer_test
+    - name: Integration Testing
+      run: |
+        start /b python message_queue.py run
+        start /b flask --app DataCollector.src.data_collector run --port 5003
+        start /b flask --app WebApplication.Frontend.front_app run --port 5000
+        start /b flask --app WebApplication.Backend.app run --port 5001
+        start /b flask --app DataAnalyzer.src.data_analyzer run --port 5002
+        timeout /t 7
+        python -m unittest test.integration-tests
