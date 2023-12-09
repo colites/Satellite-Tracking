@@ -18,6 +18,25 @@ engine = create_engine(DATABASE_URI)
 
 Base = declarative_base()
 
+engine = None
+Session = None
+
+## Lazy loading technique for loading database, only load when it is needed
+def initializeDatabase():
+    global engine, Session
+    if not engine:
+        engine = create_engine(DATABASE_URI)
+        Session = sessionmaker(bind=engine)
+
+    inspector = inspect(engine)
+
+    if not inspector.has_table('satellites'):
+        Base.metadata.create_all(engine)
+
+def getSession():
+    if not engine or not Session:
+        initializeDatabase()
+    return Session()
 
 class Satellite(Base):
     __tablename__ = 'satellites'
@@ -36,14 +55,9 @@ class Satellite(Base):
     
     __table_args__ = (UniqueConstraint('date', 'satid','observerlatitude','observerlongitude'),)
 
-inspector = inspect(engine)
-if not inspector.has_table('satellites'):
-    Base.metadata.create_all(engine)
-
 
 def commitSatellites(data, obs_latitude, obs_longitude):
-    Session = sessionmaker(bind=engine)
-    session = Session()
+    session = getSession()
 
     try:
         for sat_data in data["above"]:
@@ -76,8 +90,7 @@ def commitSatellites(data, obs_latitude, obs_longitude):
     return "success"
 
 def getSatellites(latitude, longitude):
-    Session = sessionmaker(bind=engine)
-    session = Session()
+    session = getSession()
 
     satellites = session.query(Satellite).with_entities(Satellite.satid,
                                                         Satellite.satname,
@@ -93,8 +106,7 @@ def getSatellites(latitude, longitude):
 
 def getAllSatellites():
     try:
-        Session = sessionmaker(bind=engine)
-        session = Session()
+        session = getSession()
 
         satellites = session.query(Satellite).with_entities(Satellite.satid,
                                                             Satellite.satname,
@@ -114,8 +126,7 @@ def getAllSatellites():
     return satellites_dicts
 
 def getSatellitesFiltered(satname="", satlatitude="", satlongitude="", sataltitude=""):
-    Session = sessionmaker(bind=engine)
-    session = Session()
+    session = getSession()
 
     satellites = session.query(Satellite).with_entities(Satellite.satid,
                                                         Satellite.satname,
