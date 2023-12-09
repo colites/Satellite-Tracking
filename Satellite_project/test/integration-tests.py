@@ -1,5 +1,8 @@
 import unittest
 import requests
+from schemas_queries import initializeDatabase
+
+initializeDatabase()
 
 class TestIntegration(unittest.TestCase):
 
