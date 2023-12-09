@@ -63,7 +63,7 @@ async function plotInfo(){
 
     newform.innerHTML = `
         <div id="plot-options">
-            <div class="buttons-container">
+            <div class="plot-buttons-container">
                 <label for="satorbits">Categorize satellite orbits</label>
                 <button type="button" onclick="calculateOrbits()">Categorize orbits</button>
             </div>
@@ -120,24 +120,30 @@ function makeMapOptions(){
     newform.innerHTML = `
         <div id="map-options">
             <div id="satellite-options">
-            <h2> Satellite Plotting Options</h2>
-                <label for="satname">Search for Satellite by name</label>
-                <input type="text" id="satname" name="Satellite name" placeholder="Enter a satellite name">
-
-                <label for="satlatitude">Search for satellites with a latitude range of:</label>
-                <input type="text" id="satlatitude" name="Satellite Latitude" placeholder="Enter a satellite latitude">
-
-                <label for="satlongitude">Search for satellites with a longitude range of:</label>
-                <input type="text" id="satlongitude" name="Satellite longitude" placeholder="Enter a satellite longitude">
-
-                <label for="sataltitude">Search for satellites with a altitude range of:</label>
-                <input type="text" id="sataltitude" name="Satellite Altitude" placeholder="Enter a satellite altitude">
+                <h1> Satellite Plotting Options</h1>
+                <h2> Leave fields empty to get all satellites </h2>
+                <div class="input-group">
+                    <label for="satname">Search by Satellite name:</label>
+                    <input type="text" id="satname" name="Satellite name" placeholder="Enter a satellite name">
+                </div>
+                <div class="input-group">
+                    <label for="satlatitude">Search for satellites with a latitude of:</label>
+                    <input type="text" id="satlatitude" name="Satellite Latitude" placeholder="Enter a satellite latitude">
+                </div>
+                <div class="input-group">
+                    <label for="satlongitude">Search for satellites with a longitude of:</label>
+                    <input type="text" id="satlongitude" name="Satellite longitude" placeholder="Enter a satellite longitude">
+                </div>
+                <div class="input-group">
+                    <label for="sataltitude">Search for satellites with an altitude of:</label>
+                    <input type="text" id="sataltitude" name="Satellite Altitude" placeholder="Enter a satellite altitude">
+                </div>
             </div>
             <div id="miscellaneous-additions">
-                <h2> You would be adding information for stuff like meteor showers and astronomical events.</h2>
+                <h3> Future stellar objects(meteorShowers, astronomical stuff, UFOS) To be added in the future</h3>
             </div>
             <div class="buttons-container">
-                <button type="button" onclick="makeMap()">Add Custom Satellites</button>
+                <button type="button" onclick="makeMap()">Add Custom Objects To Map</button>
             </div>
         </div>
     `
@@ -174,14 +180,28 @@ async function sendSatelliteReqs(){
     const name = document.getElementById('satname').value;
     const altitude = document.getElementById('sataltitude').value;
 
-    const data = {
-        satname: name,
-        satlatitude: latitude,
-        satlongitude: longitude,
-        sataltitude: altitude,
-        includes: "all",
-        type: "map"
-    };
+    let data;
+
+    if (latitude === "" && longitude === "" && name === "" && altitude === ""){
+        data = {
+            satname: name,
+            satlatitude: latitude,
+            satlongitude: longitude,
+            sataltitude: altitude,
+            includes: "all",
+            type: "map"
+        }
+    }
+    else {
+        data = {
+            satname: name,
+            satlatitude: latitude,
+            satlongitude: longitude,
+            sataltitude: altitude,
+            includes: "filtered",
+            type: "map"
+        }
+    }
 
     const response_data = await fetch(`http://127.0.0.1:5001/send-to-analyzer`, {
         method: "POST",

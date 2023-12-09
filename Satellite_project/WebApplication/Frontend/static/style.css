@@ -6,9 +6,11 @@ body {
     background-color: #f0f0f0;
 }
 
+
 #input_whole_screen {
     text-align: center;
 }
+
 
 #input_container {
     display: flex;
@@ -17,16 +19,19 @@ body {
     gap: 15px; 
 }
 
+
 input[type="text"] {
     width: 100px; 
     padding: 5px;
 }
+
 
 button {
     cursor: pointer;
     padding: 5px 10px;
     margin-top: 5px;
 }
+
 
 .buttons-container {
     display: flex;
@@ -48,6 +53,7 @@ button {
     background-color: rgba(0,0,0,0.7);
 }
 
+
 .modal-content {
     background-color: #fefefe;
     margin: 10% auto;
@@ -65,6 +71,7 @@ button {
     border-radius: 45%;
 }
 
+
 .close-button:hover, .close-button:focus {
     color: red;
     text-decoration: none;
@@ -81,6 +88,39 @@ button {
     padding: 10px;
 }
 
+
 .satellite-item {
     margin-bottom: 10px;
+}
+
+/* filter list */
+
+.input-group {
+    margin-bottom: 10px;  
+}
+
+
+.input-group label {
+    display: block; 
+    margin-bottom: 5px; 
+}
+
+
+.input-group input {
+    width: 15%;
+}
+
+
+#miscellaneous-additions {
+    margin-top: 20px;
+}
+
+#plot-options .plot-buttons-container {
+    margin-bottom: 10px; 
+    text-align: center; 
+}
+
+#plot-options .plot-buttons-container label {
+    display: block;
+    margin-bottom: 5px; 
 }

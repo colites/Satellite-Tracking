@@ -1,18 +1,10 @@
 import unittest
 import requests
-from unittest.mock import patch  
-from DataAnalyzer.src.data_analyzer import create_app as create_app_analyzer
-from DataCollector.src.data_collector import create_app as create_app_collector
-from WebApplication.Backend.app import create_app as create_app_backend
 
 class TestIntegration(unittest.TestCase):
-    def setUp(self):
-        self.analyzer = create_app_analyzer()
-        self.collector = create_app_collector()
-        self.backend = create_app_backend()
-
 
     def testDataCollectionPipeline(self):
+        
         frontendPost = {"latitude": 74.32, "longitude": 120.23}
         backend_response = requests.post('http://127.0.0.1:5001/send-coordinates', json=frontendPost)
         response_data = backend_response.json()
@@ -29,8 +21,9 @@ class TestIntegration(unittest.TestCase):
             self.assertTrue(all(['satlongitude' in satellite for satellite in response_data]))
             self.assertTrue(all(['sataltitude' in satellite for satellite in response_data]))
 
-        
+
     def testOrbitsPipeline(self):
+
         FrontendPost = {'type': 'orbits'}
         response = requests.post('http://127.0.0.1:5001/send-to-analyzer', json=FrontendPost)
         response_data = response.json()
@@ -44,6 +37,7 @@ class TestIntegration(unittest.TestCase):
 
 
     def testMapPipeline(self):
+
         FrontendPost = {'satname': 'HELLOWORLD', 'satlatitude': '0', 'satlongitude': '0', 'sataltitude': '0', 'includes': "all", 'type': "map"}
         response = requests.post('http://127.0.0.1:5001/send-to-analyzer', json=FrontendPost)
         response_data = response.json()

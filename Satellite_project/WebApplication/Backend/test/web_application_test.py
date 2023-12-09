@@ -6,10 +6,14 @@ class TestBackend(unittest.TestCase):
     def setUp(self):
         self.app = create_app()
         self.client = self.app.test_client()
-
+    
     @patch('requests.get')
     @patch('requests.post')
-    def testSendCoordinates(self, mock_post, mock_get):
+    @patch('WebApplication.Backend.app.push_metrics')
+    def testSendCoordinates(self, mock_push, mock_post, mock_get):
+
+        #the mock_push method simulates prometheus pushing to gateway server on tests so it is empty
+
         #mock is part of /send-coordinates endpoint, it is mocking a successful get-satellites endpoint response
         mock_post.return_value.status_code = 201
         mock_post.return_value.json.return_value = "Successfully committed satellites"
@@ -75,7 +79,8 @@ class TestBackend(unittest.TestCase):
 
     @patch('requests.get')
     @patch('requests.post')
-    def testSendDataAnalyzer(self, mock_post, mock_analyzer_get):
+    @patch('WebApplication.Backend.app.push_metrics')
+    def testSendDataAnalyzer(self, mock_push, mock_post, mock_analyzer_get):
         #Mocking a successful orbit-calculations endpoint response
         mock_post.return_value.status_code = 200
         mock_post.return_value.json.return_value = [{'satid': '24',
