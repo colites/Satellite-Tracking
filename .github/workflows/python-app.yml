@@ -38,9 +38,9 @@ jobs:
       postgres:
         image: postgres:15
         env:
-          POSTGRES_DB: satellites_proj
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: kays1234
+          POSTGRES_DB: satellites_proj_4e0l
+          POSTGRES_USER: colder
+          POSTGRES_PASSWORD: FjRRXNPZw3nTLe41wkIpy3oSllHPI9oL
         ports:
           - 5432:5432
         options: >-
@@ -76,9 +76,9 @@ jobs:
       - name: Start services and run integration tests
         run: |
          python message_queue.py run &
-         flask --app DataCollector.src.data_collector run --port 5003 &
-         flask --app WebApplication.Frontend.front_app run --port 5000 &
-         flask --app WebApplication.Backend.app run --port 5001 &
-         flask --app DataAnalyzer.src.data_analyzer run --port 5002 &
-         sleep 10
+         waitress-serve --port=5000 --call 'WebApplication.Frontend.front_app:create_app' &
+         waitress-serve --port=5001 --call 'WebApplication.Backend.app:create_app' &
+         waitress-serve --port=5003 --call 'DataCollector.src.data_collector:create_app' &
+         waitress-serve --port=5002 --call 'DataAnalyzer.src.data_analyzer:create_app' &
+         sleep 13
          python -m unittest test.integration-tests
