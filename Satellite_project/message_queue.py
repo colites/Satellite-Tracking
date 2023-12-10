@@ -17,8 +17,16 @@ def callback(ch, method, properties, body):
     if status == "fail":
         logging.error("Database commit failed")
 
+credentials = pika.PlainCredentials('qdnreuvr', 'cLLZvcWfbND3eRC8d8-watMm3rKQB26W')
 
-connection = pika.BlockingConnection(pika.ConnectionParameters('localhost'))
+connection_parameters = pika.ConnectionParameters(
+    host='hawk-01.rmq.cloudamqp.com',
+    port=5672,  
+    virtual_host='qdnreuvr',
+    credentials=credentials
+)
+
+connection = pika.BlockingConnection(connection_parameters)
 channel = connection.channel()
 channel.queue_declare(queue='database_queue')
 channel.basic_consume(queue='database_queue', on_message_callback=callback, auto_ack=True)
