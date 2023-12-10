@@ -23,7 +23,7 @@ def create_app():
 
 def push_metrics():
     try:
-        push_to_gateway('localhost:9091', job='flask_app', registry=registry)
+        push_to_gateway('https://pushgateway-ln1p.onrender.com:9091', job='flask_app', registry=registry)
     except Exception as e:
         print("Metrics push failed:", e)
 
