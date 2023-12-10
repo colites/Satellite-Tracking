@@ -35,7 +35,7 @@ class TestBackend(unittest.TestCase):
         mock_channel.basic_publish.return_value = None
 
         data = {"latitude" : 74.32, "longitude" : 120.23}
-        response = self.client.post('http://127.0.0.1:5003/get-satellites', json=data)
+        response = self.client.post('https://data-collector-r7r1.onrender.com/get-satellites', json=data)
         self.assertEqual(response.status_code, 201)
         
         # Check for the right arguments in the API call

@@ -32,16 +32,16 @@ class TestBackend(unittest.TestCase):
                                 'sataltitude':'4000'}]
         
         frontendPost = {"latitude": 74.32, "longitude": 120.23}
-        response = self.client.post('http://127.0.0.1:5001/send-coordinates', json=frontendPost)
+        response = self.client.post('https://backend-q6r6.onrender.com/send-coordinates', json=frontendPost)
         self.assertEqual(response.status_code, 200)
 
         mock_post.assert_called_once()
         call = mock_post.call_args
 
-        self.assertEqual(call[0][0], 'http://127.0.0.1:5003/get-satellites') 
+        self.assertEqual(call[0][0], 'https://data-collector-r7r1.onrender.com/get-satellites') 
         self.assertEqual(call[1]['json'], {'latitude':74.32, 'longitude':120.23})
 
-        mock_get.assert_called_once_with('http://127.0.0.1:5001/Observable-satellites?latitude=74.32&longitude=120.23')
+        mock_get.assert_called_once_with('https://backend-q6r6.onrender.com/Observable-satellites?latitude=74.32&longitude=120.23')
 
 
 
@@ -60,13 +60,13 @@ class TestBackend(unittest.TestCase):
 
         # Test out params and response for a few cases to test functionality
         params = {"latitude": 0, "longitude": 0}
-        response = self.client.get('http://127.0.0.1:5001/Observable-satellites', query_string=params)
+        response = self.client.get('https://backend-q6r6.onrender.com/Observable-satellites', query_string=params)
         self.assertEqual(response.status_code, 200)
 
         mock_db.assert_called_with(latitude=0, longitude=0)
 
         params = {"latitude": -50.23, "longitude": 125.32}
-        response = self.client.get('http://127.0.0.1:5001/Observable-satellites', query_string=params)
+        response = self.client.get('https://backend-q6r6.onrender.com/Observable-satellites', query_string=params)
         self.assertEqual(response.status_code, 200)
 
         mock_db.assert_called_with(latitude=-50.23, longitude=125.32)
@@ -105,24 +105,24 @@ class TestBackend(unittest.TestCase):
 
         ## when choosing the orbits endpoint
         data = {"type": "orbits"}
-        response = self.client.post('http://127.0.0.1:5001/send-to-analyzer', json=data)
+        response = self.client.post('https://backend-q6r6.onrender.com/send-to-analyzer', json=data)
         self.assertEqual(response.status_code, 200)
 
         mock_analyzer_get.assert_called_once()
         call = mock_analyzer_get.call_args
 
-        self.assertEqual(call[0][0], 'http://127.0.0.1:5002/orbit-calculations') 
+        self.assertEqual(call[0][0], 'https://data-analyzer.onrender.com/orbit-calculations') 
         self.assertEqual(call[1], {})
 
         ## when choosing the maps endpoint
         data = {'satname': 'HELLOWORLD', 'satlatitude': '0', 'satlongitude': '0', 'sataltitude': '0', 'includes': "all", 'type': "map"}
-        response = self.client.post('http://127.0.0.1:5001/send-to-analyzer', json=data)
+        response = self.client.post('https://backend-q6r6.onrender.com/send-to-analyzer', json=data)
         self.assertEqual(response.status_code, 200)
 
         mock_post.assert_called_once()
         call = mock_post.call_args
 
-        self.assertEqual(call[0][0], 'http://127.0.0.1:5002/make-map') 
+        self.assertEqual(call[0][0], 'https://data-analyzer.onrender.com/make-map') 
         self.assertEqual(call[1]['json'], {'satname': 'HELLOWORLD', 'satlatitude': '0', 'satlongitude': '0', 'sataltitude': '0', 'includes': "all", 'type': "map"})
 
 

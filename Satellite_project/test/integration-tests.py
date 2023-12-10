@@ -9,7 +9,7 @@ class TestIntegration(unittest.TestCase):
     def testDataCollectionPipeline(self):
         
         frontendPost = {"latitude": 74.32, "longitude": 120.23}
-        backend_response = requests.post('http://127.0.0.1:5001/send-coordinates', json=frontendPost)
+        backend_response = requests.post('https://backend-q6r6.onrender.com/send-coordinates', json=frontendPost)
         response_data = backend_response.json()
 
         self.assertEqual(backend_response.status_code, 200)
@@ -28,7 +28,7 @@ class TestIntegration(unittest.TestCase):
     def testOrbitsPipeline(self):
 
         FrontendPost = {'type': 'orbits'}
-        response = requests.post('http://127.0.0.1:5001/send-to-analyzer', json=FrontendPost)
+        response = requests.post('https://backend-q6r6.onrender.com/send-to-analyzer', json=FrontendPost)
         response_data = response.json()
 
         self.assertEqual(response.status_code, 200)
@@ -42,7 +42,7 @@ class TestIntegration(unittest.TestCase):
     def testMapPipeline(self):
 
         FrontendPost = {'satname': 'HELLOWORLD', 'satlatitude': '0', 'satlongitude': '0', 'sataltitude': '0', 'includes': "all", 'type': "map"}
-        response = requests.post('http://127.0.0.1:5001/send-to-analyzer', json=FrontendPost)
+        response = requests.post('https://backend-q6r6.onrender.com/send-to-analyzer', json=FrontendPost)
         response_data = response.json()
 
        
