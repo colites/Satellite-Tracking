@@ -14,7 +14,7 @@ HOST = config.DB_HOST
 DATABASE_NAME = config.DB_NAME
 PORT = '5432'
 
-DATABASE_URI = 'postgres://colder:FjRRXNPZw3nTLe41wkIpy3oSllHPI9oL@dpg-clq7m89jvg7s73e44kp0-a.oregon-postgres.render.com/satellites_proj_4e0l'
+DATABASE_URI = 'postgresql://colder:FjRRXNPZw3nTLe41wkIpy3oSllHPI9oL@dpg-clq7m89jvg7s73e44kp0-a.oregon-postgres.render.com/satellites_proj_4e0l'
 
 Base = declarative_base()
 
