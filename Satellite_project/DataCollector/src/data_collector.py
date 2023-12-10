@@ -6,7 +6,6 @@ import pika
 
 main = Blueprint('main', __name__)
 
-#license key = 777RKY-662TWA-KAK8Z7-55Y1
 def create_app():
     app = Flask(__name__)
     app.register_blueprint(main)
@@ -17,7 +16,17 @@ def create_app():
 def getData():
     data = request.get_json()
     
-    connection = pika.BlockingConnection(pika.ConnectionParameters('localhost'))
+    # CloudAMQP credentials
+    credentials = pika.PlainCredentials('qdnreuvr', 'cLLZvcWfbND3eRC8d8-watMm3rKQB26W')
+
+    connection_parameters = pika.ConnectionParameters(
+        host='hawk-01.rmq.cloudamqp.com',
+        port=5672,  
+        virtual_host='qdnreuvr',
+        credentials=credentials
+    )
+
+    connection = pika.BlockingConnection(connection_parameters)
     channel = connection.channel()
     channel.queue_declare(queue='database_queue')
 
