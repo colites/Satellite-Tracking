@@ -17,8 +17,13 @@ def callback(ch, method, properties, body):
     if status == "fail":
         logging.error("Database commit failed")
 
+credentials = pika.PlainCredentials('guest', 'guest')
 
-connection = pika.BlockingConnection(pika.ConnectionParameters('localhost'))
+connection_parameters = pika.ConnectionParameters(
+    host='rabbitmq-server-kgaz.onrender.com',
+    credentials=credentials
+)
+connection = pika.BlockingConnection(connection_parameters)
 channel = connection.channel()
 channel.queue_declare(queue='database_queue')
 channel.basic_consume(queue='database_queue', on_message_callback=callback, auto_ack=True)

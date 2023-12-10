@@ -16,7 +16,13 @@ def create_app():
 def getData():
     data = request.get_json()
     
-    connection = pika.BlockingConnection(pika.ConnectionParameters('localhost'))
+    credentials = pika.PlainCredentials('guest', 'guest')
+
+    connection_parameters = pika.ConnectionParameters(
+        host='rabbitmq-server-kgaz.onrender.com',
+        credentials=credentials
+    )
+    connection = pika.BlockingConnection(connection_parameters)
     channel = connection.channel()
     channel.queue_declare(queue='database_queue')
 
