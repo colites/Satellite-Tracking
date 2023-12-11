@@ -19,7 +19,6 @@ def create_app():
 @main.route('/send-coordinates', methods=['POST'])
 def SendCoordinatesToCollector():
     ## Send data to the collector
-    requests_counter.inc()
     data = request.get_json()
 
     latitude = data.get("latitude", "")
