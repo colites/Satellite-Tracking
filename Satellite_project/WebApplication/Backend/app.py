@@ -3,10 +3,13 @@ import os
 import requests
 from flask import Flask, request, jsonify, Blueprint
 from flask_cors import CORS
-
+from prometheus_client import Counter, make_wsgi_app
+from werkzeug.middleware.dispatcher import DispatcherMiddleware
 #need to include root imports
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..')))
 import schemas_queries as queries
+
+requests_counter = Counter('my_app_requests_total', 'Total number of requests to my app')
 
 main = Blueprint('main', __name__)
 
@@ -14,10 +17,16 @@ def create_app():
     app = Flask(__name__)
     app.register_blueprint(main)
     CORS(app) 
+
+    app.wsgi_app = DispatcherMiddleware(app.wsgi_app, {
+        '/metrics': make_wsgi_app()
+    })
+
     return app
 
 @main.route('/send-coordinates', methods=['POST'])
 def SendCoordinatesToCollector():
+    requests_counter.inc()
     ## Send data to the collector
     data = request.get_json()
 
@@ -53,6 +62,7 @@ def displayObservableSatellites():
 
 @main.route('/send-to-analyzer', methods=['POST'])
 def sendData():
+    requests_counter.inc()
     data = request.get_json()
     if len(data) == 0:
         return jsonify({"message": "No data to be analyzed"}), 400
