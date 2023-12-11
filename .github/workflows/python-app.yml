@@ -83,11 +83,31 @@ jobs:
          sleep 13
          python -m unittest test.integration-tests
   deploy:
+    needs: [integration-test-linux]
     runs-on: ubuntu-latest
     steps:
-      - name: Deploy to production
+      - name: Deploy Frontend
         uses: johnbeynon/render-deploy-action@v0.0.8
         with:
           service-id: ${{ secrets.FRONTEND_SERVICE_ID}}
           api-key: ${{ secrets.MY_RENDER_API_KEY }}
-          wait-for-success: true
+      - name: Deploy Backend
+        uses: johnbeynon/render-deploy-action@v0.0.8
+        with:
+          service-id: ${{ secrets.BACKEND_SERVICE_ID}}
+          api-key: ${{ secrets.MY_RENDER_API_KEY }}
+      - name: Deploy Message Queue Script
+        uses: johnbeynon/render-deploy-action@v0.0.8
+        with:
+          service-id: ${{ secrets.MESSAGE_SERVICE_ID}}
+          api-key: ${{ secrets.MY_RENDER_API_KEY }}
+      - name: Deploy Collector
+        uses: johnbeynon/render-deploy-action@v0.0.8
+        with:
+          service-id: ${{ secrets.COLLECTOR_SERVICE_ID}}
+          api-key: ${{ secrets.MY_RENDER_API_KEY }}
+      - name: Deploy Analyzer
+        uses: johnbeynon/render-deploy-action@v0.0.8
+        with:
+          service-id: ${{ secrets.ANALYZER_SERVICE_ID}}
+          api-key: ${{ secrets.MY_RENDER_API_KEY }}
